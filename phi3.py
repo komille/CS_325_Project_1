@@ -13,5 +13,7 @@ for input in inputs:                                            #for loop for se
     for responses in phi3response:
         with open("Output.txt", "a") as output:                 #opens file for the responses
             output.write(responses['message']['content'])
+    with open("Output.txt","a") as output:
+        output.write("\n")   
 inputfile.close()                                               #closes file for the prompts 
 output.close()                                                  #closes file for the responses
