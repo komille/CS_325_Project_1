@@ -1,11 +1,24 @@
-1.Download Ollama for windows at Ollama.com/downloads/windows
-    1.Open OllamaSetup.exe
-    1.Follow instructions on OllamaSetup.exe and install Ollama
+Downloads
 
-1.Running the code
-    1.Command prompt terminal \n
+    (1) Ollama for windows at Ollama.com/downloads/windows
+
+    (2) Open OllamaSetup.exe
+    
+    (3) Follow instructions on OllamaSetup.exe and install Ollama
+
+    (4) Run the following command in vs terminal 
+        1.pip install ollama 
+
+Running the code
+
+    (1) Command prompt terminal 
+    
         1.ollama serve (if not already run)
-        1.ollama run phi3 (if not already run)
-    1.VS code 
+        
+        2.ollama run phi3 (if not already run)
+        
+    (2) VS code 
+    
         1.Run phi3.py
-        1.Responses will appear in separate line in Output.txt
+        
+        2.Responses will appear in separate lines in Output.txt
