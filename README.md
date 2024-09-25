@@ -11,13 +11,13 @@ Downloads
 
 Running the code
 
-    (1) Command prompt terminal 
+    (1) Run the following commands in command prompt terminal 
     
         1.ollama serve (if not already run)
         
         2.ollama run phi3 (if not already run)
         
-    (2) VS code 
+    (2) Run the following files in VS code 
     
         1.Run phi3.py
         
