@@ -1,5 +1,5 @@
 ## Package Downloads
-    1.BeautifulSoup (used to scrap html from websites being scraped)
+    1.BeautifulSoup4 (used to scrap html from websites being scraped)
     2.requests (used to send http requests to the website that is being scraped)
 ## File Downloads
     1.Download requirements.yaml file
