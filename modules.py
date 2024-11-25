@@ -3,31 +3,35 @@ from bs4 import BeautifulSoup
 import requests
 from matplotlib import pyplot as plot
 import numpy as nplot
-def analyze_rating(inputfile,outputfile):
-    with open(inputfile, "r",encoding ='utf-8') as inputfile:                       #opens file containing the prompts
-        inputs = inputfile.readlines()                              #reads the prompts from the file
+def analyze_rating(inputs,outputfile):
+    response_list = []
     for input in inputs:                                            #for loop for sending the prompts to phi3
-        if not input.strip():
-            continue
-        phi3response = ollama.chat(                                 #runs ollama locally
-            model="phi3",
-            messages=[
-            {
-                'role': 'user',
-                'content': "Please rate the following comment as Negative, Positive, or Neutral:" + input + ". Please only respond with one word.",
-            }],
-            stream = True,
-            options={
-                "num_predict": 3,
-                "temperature":0
-            }
-            )
-        for responses in phi3response:
-            with open(outputfile, "a",encoding = 'utf-8') as output:                 #opens file for the responses
-                output.write(responses['message']['content'])
-        with open(outputfile,"a") as output:
-            output.write("\n")   
+        print(input)
+        response = generate_response(input)
+        response_list.append(response +'\n')
+    with open(outputfile, "a",encoding = 'utf-8') as output:                 #opens file for the responses
+        for response in response_list:
+            output.write(response)
     return outputfile
+
+def generate_response(input):
+    response_list =str()
+    phi3_response = ollama.generate(                                 #runs ollama locally
+        model="phi3",
+        messages=[
+        {
+            'role': 'user',
+            'content': "Please rate the following comment as Negative, Positive, or Neutral:" + input + ". Please only respond with one word.",
+        }],
+        stream = True,
+        options={
+            "num_predict":3,
+            "temperature":0
+        }
+        )
+    for responses in phi3_response:
+        response_list += (responses['message']['content'])
+    return response_list
 
 class rating: 
     positive= 0
@@ -59,10 +63,8 @@ class rating:
         ratingfile.close()
         return self.negative + self.positive + self.neutral
 
-
-
-def get_reviews(url,output_file):                                           
-    stripped_review=''                                                              #string for adding reviews 
+def get_reviews(url):                                           
+    stripped_review=[]                                                             #string for adding reviews 
     
     URL = url.strip()                                                                   #strips url that is read from the file
     request = requests.get(URL)
@@ -71,7 +73,7 @@ def get_reviews(url,output_file):
     first_page_reviews = soup.find('div',class_='reviews--details')                     #scrapes the review comments from the first page of the product
     first_page_reviews_2 = first_page_reviews.find_all('p',class_='review--content')
     for review in first_page_reviews_2:
-        stripped_review +=review.get_text()+ "\n"                                     #adds review to string
+        stripped_review.append(review.get_text()+ "\n")                                     #adds review to string
 
     next_url = soup.find('div',class_ ='reviews--head')                                 #scrapes the url for the first next review page    
     next_url_2 = next_url.find_all('a')
@@ -88,7 +90,7 @@ def get_reviews(url,output_file):
         follow_review = soup.find('div', class_='reviews')                                                 #scrapes review comments for the following review pages
         all_reviews= follow_review.find_all('p', class_ = 'review-item-content rvw-wrap-spaces')
         for rv in all_reviews:
-            stripped_review+= rv.get_text()+ "\n"                                     #adds reviews to string
+            stripped_review.append(rv.get_text()+ "\n")                                     #adds reviews to string
 
         next_url_while= soup.find_all('a','spf-link')                                   #scrapes the following review page urls
         new_url =''
@@ -104,8 +106,7 @@ def get_reviews(url,output_file):
             rel= url.get('class')
             if(rel==["disabled" , "spf-link"]):
                 eop =True
-    with open(output_file, "w", encoding='utf-8') as output:                        #opens files for the reviews
-        output.write(stripped_review)                                                #writes review string to file
+    return stripped_review
 
 def create_graph(analyzed_reviews):
     num_objects = len(analyzed_reviews)
@@ -156,8 +157,3 @@ def create_graph(analyzed_reviews):
     plot.tight_layout() #adjust layout to prevent clipping of labels
     plot.show()  #show the plot
     return fig, ax
-
-
-
-
-   
