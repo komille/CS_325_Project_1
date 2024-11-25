@@ -1,4 +1,4 @@
-from modules import rating 
+om modules import rating 
 from modules import analyze_rating
 from modules import get_reviews
 from modules import create_graph
@@ -9,9 +9,9 @@ with open("URLS.txt", "r") as inputfile:                                        
     URLS = inputfile.readlines() 
 for URL in URLS: 
     product_filename = "Amazon_Echo_Dot_"+ str(count) +"_Reviews.txt" 
-    get_reviews(URL,product_filename) 
+    reviews = get_reviews(URL) 
     analyzed_review_file = "Analyzed_" + product_filename           
-    analyze_rating(product_filename,analyzed_review_file)
+    analyze_rating(reviews,analyzed_review_file)
 
     next_rating = rating()
     next_rating.set_product_name("Amazon Echo Dot "+ str(count))
