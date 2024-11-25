@@ -2,6 +2,7 @@ import pytest
 from modules import rating
 from modules import analyze_rating
 from modules import create_graph
+from modules import generate_response
 
 #uses test data to test count_rating method
 def test_count_rating():
@@ -14,7 +15,8 @@ def test_count_rating():
 #tests analyze rating function using test data
 def test_analyze_rating():
     test_output = []
-    analyze_rating("test_data\Analyze_rating_test_data","out.txt")
+    test_data = ["Great Product","Loved It","Awful","As expected"]
+    analyze_rating(test_data,"out.txt")
     with open("out.txt", "r",encoding ='utf-8') as inputfile:
         inputs = inputfile.readlines()
         for input in inputs:
@@ -46,7 +48,10 @@ def test_graph():
     actual_labels = [tick.get_text() for tick in ax.get_xticklabels()]
     assert actual_labels == expected_labels
 
-    
+def test_generate_response():
+    response = generate_response("Awful Product")
+    assert response == "Negative"
+
 #tests assignment in rating class
 def test_rating_assign():
     test_rating = rating()
@@ -58,6 +63,7 @@ def test_rating_assign():
     assert test_rating.positive == 1
     assert test_rating.negative == 1
     assert test_rating.neutral == 1
+
 
 
 
