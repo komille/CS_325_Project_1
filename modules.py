@@ -6,7 +6,6 @@ import numpy as nplot
 def analyze_rating(inputs,outputfile):
     response_list = []
     for input in inputs:                                            #for loop for sending the prompts to phi3
-        print(input)
         response = generate_response(input)
         response_list.append(response +'\n')
     with open(outputfile, "a",encoding = 'utf-8') as output:                 #opens file for the responses
