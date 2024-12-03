@@ -9,7 +9,7 @@ with open("URLS.txt", "r") as inputfile:                                        
     URLS = inputfile.readlines() 
 for URL in URLS: 
     product_filename = "Amazon_Echo_Dot_"+ str(count) +"_Reviews.txt" 
-    reviews = get_reviews(URL) 
+    reviews = get_reviews(URL,product_filename) 
     analyzed_review_file = "Analyzed_" + product_filename           
     analyze_rating(reviews,analyzed_review_file)
 
