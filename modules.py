@@ -15,7 +15,7 @@ def analyze_rating(inputs,outputfile):
 
 def generate_response(input):
     response_list =str()
-    phi3_response = ollama.generate(                                 #runs ollama locally
+    phi3_response = ollama.chat(                                 #runs ollama locally
         model="phi3",
         messages=[
         {
@@ -63,7 +63,8 @@ class rating:
         return self.negative + self.positive + self.neutral
 
 def get_reviews(url):                                           
-    stripped_review=[]                                                             #string for adding reviews 
+    stripped_review=[] 
+    count = 1 #string for adding reviews 
     
     URL = url.strip()                                                                   #strips url that is read from the file
     request = requests.get(URL)
@@ -105,6 +106,10 @@ def get_reviews(url):
             rel= url.get('class')
             if(rel==["disabled" , "spf-link"]):
                 eop =True
+    with open(output_filename, "w", encoding='utf-8') as output:                        #opens files for the reviews
+        for review in stripped_review:
+            output.write(str(count) + ": " + review)                                         #writes review string to file
+            count=count +1
     return stripped_review
 
 def create_graph(analyzed_reviews):
